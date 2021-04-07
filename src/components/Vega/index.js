@@ -1,9 +1,7 @@
 import React, { useReducer, useEffect } from "react";
 import { Vega } from 'react-vega';
 
-import CovidService from "../../services/CovidService";
-import { generateRandomColor } from "../../helpers/generateRandomColor";
-import generateConfig from "./config";
+import Spinner from "../../components/Spinner"
 
 const initialVegaChartState = {
     loading: true,
@@ -13,38 +11,29 @@ const initialVegaChartState = {
 const vegaChartReducer = (state, { type, payload }) => {
     switch (type) {
         case "SET_DATA": {
-            return { ...state, config: generateConfig(payload?.regions, payload?.regions?.map(e => generateRandomColor())), loading: false }
+            return { ...state, config: payload, loading: false }
         }
         default:
             return state;
     }
 };
 
-const VegaChart = () => {
+const VegaChart = ({ configCallback, title }) => {
     const [{ loading, config }, dispatch] = useReducer(vegaChartReducer, initialVegaChartState)
 
-
     useEffect(() => {
-        async function fetchCovidData() {
+        (async function setupVegaConfig() {
             try {
-                const country = "Spain";
-                const today = new Date();
-                const dateString = new Date(today.getTime() - (today.getTimezoneOffset() * 60000))
-                    .toISOString()
-                    .split("T")[0];
-                const { data: { total, dates: { [dateString]: { countries: { [country]: { regions } } }
-                }
-                } } = await CovidService.fetchCases(dateString, country)
-                dispatch({ type: "SET_DATA", payload: { total, regions } })
+                dispatch({
+                    type: "SET_DATA", payload: await configCallback()
+                })
             } catch (error) {
                 console.log(error)
             }
-        };
-        fetchCovidData();
-    }, [])
+        })();
+    }, [configCallback])
 
-
-    return loading ? <p>Loading...</p> : <Vega
+    return loading ? <Spinner /> : <Vega
         spec={
             config
         }
@@ -55,7 +44,7 @@ const VegaChart = () => {
             compiled: false,
             editor: false,
         }}
-        downloadFileName={'Just Name It'}
+        downloadFileName={title}
     />
 }
 

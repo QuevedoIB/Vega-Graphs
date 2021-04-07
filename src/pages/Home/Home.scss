@@ -1,0 +1,11 @@
+@import "index.scss";
+
+.c-nav-list {
+    min-height: 25%;
+    background: $dark-green-color;
+    padding: 2rem;
+    margin: 0;
+    line-height: 2.5;
+    list-style: none;
+    border-radius: 0.5rem;
+}

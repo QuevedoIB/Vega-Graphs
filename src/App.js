@@ -1,15 +1,24 @@
-import './App.css';
-import React from "react";
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import VegaChart from "./components/Vega";
+import Home from 'pages/Home';
+import DailyCases from 'pages/DailyCases';
+import TotalCases from 'pages/TotalCases';
+
+import routes from 'pages/routes';
+
+import './App.scss';
 
 function App() {
-
-  return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <VegaChart />
-    </div >
-  );
+    return (
+        <Router>
+            <Switch>
+                <Route path={routes.daily} exact component={DailyCases} />
+                <Route path={routes.total} exact component={TotalCases} />
+                <Route path="/" component={Home} />
+            </Switch>
+        </Router>
+    );
 }
 
 export default App;

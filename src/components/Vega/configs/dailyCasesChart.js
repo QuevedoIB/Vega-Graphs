@@ -1,6 +1,6 @@
-const generateConfig = (values, range) => ({
+const generateConfig = ({ values, range, title }) => ({
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-    title: 'New covid cases in Spain',
+    title,
     data: { values },
     /* layer allows to render multiple charts at the same time */
     layer: [

@@ -1,0 +1,12 @@
+{
+    "routes": {
+        "daily": "$t(daily_cases.title)",
+        "total": "$t(total_cases.title)"
+    },
+    "daily_cases": {
+        "title": "Daily covid cases in Spain"
+    },
+    "total_cases": {
+        "title": "Total covid cases, deaths and recovered in Spain"
+    }
+}
